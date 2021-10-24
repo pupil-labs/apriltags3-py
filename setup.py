@@ -18,7 +18,7 @@ if platform.system() == "Windows":
     # The Ninja cmake generator will use mingw (gcc) on windows travis instances, but we
     # need to use msvc for compatibility. The easiest solution I found was to just use
     # the vs cmake generator as it defaults to msvc.
-    cmake_args.append("-GVisual Studio 15 2017 Win64")
+    cmake_args.append("-GVisual Studio 16 2019 Win64")
     cmake_args.append("-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=True")
 
 with open("README.md") as f:
