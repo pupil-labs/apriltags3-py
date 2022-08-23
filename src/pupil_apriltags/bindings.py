@@ -264,14 +264,13 @@ class Detector(object):
         }
         filename_pattern = filename_patterns_by_platform[platform.system()]
 
-        
         if platform.system() == "Windows":
             # the apriltags dll depends on pthreads-win, we inject our pre-built libs
             # into the path before loading with ctypes
             import pupil_pthreads_win
-            dll_path = str(pupil_pthreads_win.dll_path.parent.resolve())
-            os.environ["PATH"] = dll_path + os.pathsep + os.environ["PATH"]
 
+            dll_path = str(pupil_pthreads_win.dll_path.parent.resolve())
+            os.add_dll_directory(dll_path)
 
         self.libc = None
         self.tag_detector = None
@@ -282,10 +281,14 @@ class Detector(object):
         )
         for hit in possible_hits:
             logger.debug(f"Testing possible hit: {hit}...")
+            if platform.system() == "Windows":
+                dll_dir = os.add_dll_directory(str(hit.parent.resolve()))
             self.libc = ctypes.CDLL(str(hit))
             if self.libc:
                 logger.debug(f"Found working clib at {hit}")
                 break
+            if platform.system() == "Windows":
+                dll_dir.close()
         else:
             raise RuntimeError(
                 (
@@ -400,7 +403,7 @@ class Detector(object):
     def detect(self, img, estimate_tag_pose=False, camera_params=None, tag_size=None):
 
         """Run detectons on the provided image. The image must be a grayscale
-image of type numpy.uint8."""
+        image of type numpy.uint8."""
 
         assert len(img.shape) == 2
         assert img.dtype == numpy.uint8
