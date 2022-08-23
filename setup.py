@@ -19,5 +19,5 @@ if platform.system() == "Windows":
 
 setup(
     cmake_args=cmake_args,
-    cmake_install_dir="src/pupil_apriltags",
+    cmake_source_dir="apriltags-source",
 )
