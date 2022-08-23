@@ -15,13 +15,14 @@ from __future__ import division, print_function
 
 import ctypes
 import itertools
+import logging
 import os
 import platform
 from pathlib import Path
 
 import numpy
 
-from . import logger
+logger = logging.getLogger(__name__)
 
 ######################################################################
 

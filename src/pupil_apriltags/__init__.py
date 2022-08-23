@@ -1,7 +1,15 @@
-__version__ = "1.0.4"
+try:
+    from importlib.metadata import PackageNotFoundError, version
+except ImportError:
+    from importlib_metadata import PackageNotFoundError, version
 
-import logging
-
-logger = logging.getLogger(__name__)
+try:
+    __version__ = version("pupil-apriltags")
+except PackageNotFoundError:
+    # package is not installed
+    pass
 
 from .bindings import Detector, Detection
+
+
+__all__ = ["Detector", Detection]
