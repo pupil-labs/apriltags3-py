@@ -9,7 +9,6 @@ except PackageNotFoundError:
     # package is not installed
     pass
 
-from .bindings import Detector, Detection
-
+from .bindings import Detection, Detector
 
 __all__ = ["Detector", Detection]

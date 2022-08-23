@@ -11,7 +11,6 @@ Updates: Matt Zucker, Fall 2016
 Apriltags 3 version: Aleksandar Petrov, Spring 2019
 
 """
-from __future__ import division, print_function
 
 import ctypes
 import itertools
@@ -19,6 +18,7 @@ import logging
 import os
 import platform
 from pathlib import Path
+from typing import Tuple
 
 import numpy
 
@@ -214,37 +214,51 @@ class Detection:
 ######################################################################
 
 
-class Detector(object):
+class Detector:
 
     """Pythonic wrapper for apriltag_detector.
 
-    families: Tag families, separated with a space, default: tag36h11
+    :param families: Tag families, separated with a space, default: tag36h11
 
-    nthreads: Number of threads, default: 1
+    :param nthreads: Number of threads, default: 1
 
-    quad_decimate: Detection of quads can be done on a lower-resolution image, improving speed at a cost of pose accuracy and a slight decrease in detection rate. Decoding the binary payload is still done at full resolution, default: 2.0
+    :param quad_decimate: Detection of quads can be done on a lower-resolution image,
+        improving speed at a cost of pose accuracy and a slight decrease in detection
+        rate. Decoding the binary payload is still done at full resolution, default: 2.0
 
-    quad_sigma: What Gaussian blur should be applied to the segmented image (used for quad detection?)  Parameter is the standard deviation in pixels.  Very noisy images benefit from non-zero values (e.g. 0.8), default:  0.0
+    :param quad_sigma: What Gaussian blur should be applied to the segmented image (used
+        for quad detection?)  Parameter is the standard deviation in pixels.  Very noisy
+        images benefit from non-zero values (e.g. 0.8), default:  0.0
 
-    refine_edges: When non-zero, the edges of the each quad are adjusted to "snap to" strong gradients nearby. This is useful when decimation is employed, as it can increase the quality of the initial quad estimate substantially. Generally recommended to be on (1). Very computationally inexpensive. Option is ignored if quad_decimate = 1, default: 1
+    :param refine_edges: When non-zero, the edges of the each quad are adjusted to "snap
+        to" strong gradients nearby. This is useful when decimation is employed, as it
+        can increase the quality of the initial quad estimate substantially. Generally
+        recommended to be on (1). Very computationally inexpensive. Option is ignored
+        if quad_decimate = 1, default: 1
 
-    decode_sharpening: How much sharpening should be done to decoded images? This can help decode small tags but may or may not help in odd lighting conditions or low light conditions, default = 0.25
+    :param decode_sharpening: How much sharpening should be done to decoded images? This
+        can help decode small tags but may or may not help in odd lighting conditions or
+        low light conditions, default = 0.25
 
-    searchpath: Where to look for the Apriltag 3 library, must be a list, default: ['apriltags']
+    :param debug: If 1, will save debug images. Runs very slow, default: 0
 
-    debug: If 1, will save debug images. Runs very slow, default: 0
+    :param searchpath: Where to look for the Apriltag 3 library, must be a list,
+        default: ["src/lib", "src/lib64"]
     """
 
     def __init__(
         self,
-        families="tag36h11",
-        nthreads=1,
-        quad_decimate=2.0,
-        quad_sigma=0.0,
-        refine_edges=1,
-        decode_sharpening=0.25,
-        debug=0,
-        searchpath=(Path(__file__).parent / "lib", Path(__file__).parent / "lib64"),
+        families: str = "tag36h11",
+        nthreads: int = 1,
+        quad_decimate: float = 2.0,
+        quad_sigma: float = 0.0,
+        refine_edges: int = 1,
+        decode_sharpening: float = 0.25,
+        debug: int = 0,
+        searchpath: Tuple[Path, ...] = (
+            Path(__file__).parent / "lib",
+            Path(__file__).parent / "lib64",
+        ),
     ):
 
         # Parse the parameters
@@ -292,10 +306,8 @@ class Detector(object):
                 dll_dir.close()
         else:
             raise RuntimeError(
-                (
-                    "Could not find clib with pattern "
-                    f"{filename_pattern} in any of {searchpath}"
-                )
+                "Could not find clib with pattern "
+                f"{filename_pattern} in any of {searchpath}"
             )
 
         # create the c-_apriltag_detector object
@@ -428,7 +440,7 @@ class Detector(object):
 
             homography = _matd_get_array(
                 tag.H
-            ).copy()  # numpy.zeros((3,3))  # Don't ask questions, move on with your life
+            ).copy()  # numpy.zeros((3,3)) # Don't ask questions, move on with your life
             center = numpy.ctypeslib.as_array(tag.c, shape=(2,)).copy()
             corners = numpy.ctypeslib.as_array(tag.p, shape=(4, 2)).copy()
 
@@ -442,16 +454,18 @@ class Detector(object):
             detection.corners = corners
 
             if estimate_tag_pose:
-                if camera_params == None:
+                if camera_params is None:
                     raise Exception(
-                        "camera_params must be provided to detect if estimate_tag_pose is set to True"
+                        "camera_params must be provided to detect if estimate_tag_pose "
+                        "is set to True"
                     )
-                if tag_size == None:
+                if tag_size is None:
                     raise Exception(
-                        "tag_size must be provided to detect if estimate_tag_pose is set to True"
+                        "tag_size must be provided to detect if estimate_tag_pose is "
+                        "set to True"
                     )
 
-                camera_fx, camera_fy, camera_cx, camera_cy = [c for c in camera_params]
+                camera_fx, camera_fy, camera_cx, camera_cy = (c for c in camera_params)
 
                 info = _ApriltagDetectionInfo(
                     det=apriltag,
@@ -502,32 +516,25 @@ class Detector(object):
         return c_img
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # noqa
 
     test_images_path = "test"
 
     visualization = True
     try:
         import cv2
-    except:
+    except ImportError:
         raise Exception(
-            "You need cv2 in order to run the demo. However, you can still use the library without it."
+            "You need cv2 in order to run the demo. However, you can still use the "
+            "library without it."
         )
-
-    try:
-        from cv2 import imshow
-    except:
-        print(
-            "The function imshow was not implemented in this installation. Rebuild OpenCV from source to use it"
-        )
-        print("VIsualization will be disabled.")
-        visualization = False
 
     try:
         import yaml
-    except:
+    except ImportError:
         raise Exception(
-            "You need yaml in order to run the tests. However, you can still use the library without it."
+            "You need yaml in order to run the tests. However, you can still use the "
+            "library without it."
         )
 
     at_detector = Detector(
@@ -541,10 +548,10 @@ if __name__ == "__main__":
         debug=0,
     )
 
-    with open(test_images_path + "/test_info.yaml", "r") as stream:
+    with open(test_images_path + "/test_info.yaml") as stream:
         parameters = yaml.load(stream)
 
-    #### TEST WITH THE SAMPLE IMAGE ####
+    # TEST WITH THE SAMPLE IMAGE
 
     print("\n\nTESTING WITH A SAMPLE IMAGE")
 
@@ -597,7 +604,7 @@ if __name__ == "__main__":
         if k == 27:  # wait for ESC key to exit
             cv2.destroyAllWindows()
 
-    #### TEST WITH THE ROTATION IMAGES ####
+    # TEST WITH THE ROTATION IMAGES
 
     import time
 
@@ -652,7 +659,7 @@ if __name__ == "__main__":
 
     print("AVG time per detection: ", time_sum / time_num)
 
-    #### TEST WITH MULTIPLE TAGS IMAGES ####
+    # TEST WITH MULTIPLE TAGS IMAGES
 
     print("\n\nTESTING WITH MULTIPLE TAGS IMAGES")
 
