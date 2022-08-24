@@ -1,5 +1,6 @@
 import platform
 
+from setuptools import find_packages
 from skbuild import setup
 
 package_dir = "src"
@@ -18,6 +19,10 @@ if platform.system() == "Windows":
     cmake_args.append("-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=True")
 
 setup(
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
+    include_package_data=False,
     cmake_args=cmake_args,
-    cmake_source_dir="apriltags-source",
+    cmake_source_dir="src/pupil_apriltags",
+    cmake_install_dir="src/pupil_apriltags",
 )

@@ -1,7 +1,7 @@
 include LICENSE
 include README.rst
 include CHANGES.rst
-include CMakeLists.txt
+include src/pupil_apriltags/CMakeLists.txt
 include setup.py
 include setup.cfg
 include pyproject.toml
