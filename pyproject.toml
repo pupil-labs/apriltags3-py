@@ -20,3 +20,16 @@ addopts = "--mypy"
 
 [tool.pytest-enabler.cov]
 addopts = "--cov"
+
+[tool.cibuildwheel]
+archs = ["native"]
+skip = "{cp,pp}27-* {cp,pp}35-* pp*"
+
+build-frontend = "build"
+
+test-command = "pytest {package}/tests -v"
+before-test = ""
+test-requires = ["pytest"]
+test-extras = []
+
+manylinux-x86_64-image = "manylinux2014"
