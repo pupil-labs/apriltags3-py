@@ -17,6 +17,7 @@ import itertools
 import logging
 import os
 import platform
+import sys
 from pathlib import Path
 from typing import Tuple
 
@@ -285,7 +286,10 @@ class Detector:
             import pupil_pthreads_win
 
             dll_path = str(pupil_pthreads_win.dll_path.parent.resolve())
-            os.add_dll_directory(dll_path)
+            if sys.version_info < (3, 8):
+                os.environ["PATH"] = dll_path + os.pathsep + os.environ["PATH"]
+            else:
+                os.add_dll_directory(dll_path)
 
         self.libc = None
         self.tag_detector = None
@@ -297,12 +301,16 @@ class Detector:
         for hit in possible_hits:
             logger.debug(f"Testing possible hit: {hit}...")
             if platform.system() == "Windows":
-                dll_dir = os.add_dll_directory(str(hit.parent.resolve()))
+                dll_path = str(hit.parent.resolve())
+                if sys.version_info < (3, 8):
+                    os.environ["PATH"] = dll_path + os.pathsep + os.environ["PATH"]
+                else:
+                    dll_dir = os.add_dll_directory(dll_path)
             self.libc = ctypes.CDLL(str(hit))
             if self.libc:
                 logger.debug(f"Found working clib at {hit}")
                 break
-            if platform.system() == "Windows":
+            if platform.system() == "Windows" and sys.version_info >= (3, 8):
                 dll_dir.close()
         else:
             raise RuntimeError(
