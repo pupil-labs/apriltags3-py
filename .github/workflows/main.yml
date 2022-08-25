@@ -25,12 +25,6 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: distribution-without-repair
-          path: ./dist/*.whl
-
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
           name: distribution
           path: ./wheelhouse/*.whl
 
