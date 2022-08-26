@@ -290,6 +290,7 @@ class Detector:
                 os.environ["PATH"] = dll_path + os.pathsep + os.environ["PATH"]
             else:
                 os.add_dll_directory(dll_path)
+            self._pthreads_dll = ctypes.CDLL(str(pupil_pthreads_win.dll_path))
 
         self.libc = None
         self.tag_detector = None

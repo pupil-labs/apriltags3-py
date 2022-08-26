@@ -24,7 +24,6 @@ addopts = "--cov"
 [tool.cibuildwheel]
 archs = ["native"]
 skip = "{cp,pp}27-* {cp,pp}35-* pp*"
-test-skip = "cp36-win* cp37-win*"
 
 build-frontend = "build"
 
