@@ -4,6 +4,7 @@ requires = [
     "setuptools_scm[toml]>=3.4.1",
     "wheel",
     "scikit-build",
+    "Cython",
     "cmake",
     "ninja;platform_system != \"Windows\"",
     "pupil-pthreads-win;platform_system == \"Windows\"",
