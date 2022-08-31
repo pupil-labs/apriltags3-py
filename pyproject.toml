@@ -37,7 +37,7 @@ manylinux-x86_64-image = "manylinux2014"
 
 [tool.cibuildwheel.windows]
 before-build = "pip install delvewheel pupil-pthreads-win"
-repair-wheel-command = """\
-delvewheel repair -w {dest_dir} {wheel} --add-path \
-    $(python -c \"import pupil_pthreads_win as pt; print(str(pt.dll_path.parent))\")\
-"""
+repair-wheel-command = [
+    'pthreads_dll_path=$(python -c "import pupil_pthreads_win as pt; print(str(pt.dll_path.parent))")',
+    'delvewheel repair -w {dest_dir} {wheel} --add-path $pthreads_dll_path',
+]
