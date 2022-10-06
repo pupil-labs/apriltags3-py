@@ -1,3 +1,10 @@
+1.0.4.post1 (2022-10-06)
+########################
+- Python >=3.8 support
+- PyPI wheels for Python 3.6 - 3.11
+- Workaround for `manually added DLLs <https://github.com/adang1345/delvewheel/issues/32>`__
+  (Windows only; Python <3.8 only)
+
 1.0.4 (2020-10-29)
 ##################
 - Remove cmake pin
