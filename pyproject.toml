@@ -1,10 +1,42 @@
 [build-system]
 requires = [
-    "setuptools",
+    "setuptools>=56",
+    "setuptools_scm[toml]>=3.4.1",
     "wheel",
     "scikit-build",
+    "Cython",
     "cmake",
-    "ninja",
-    "pupil-pthreads-win;platform_system == \"Windows\""
+    "ninja;platform_system != \"Windows\"",
+    "pupil-pthreads-win;platform_system == \"Windows\"",
 ]
 build-backend = "setuptools.build_meta"
+
+[tool.black]
+skip-string-normalization = false
+
+[tool.setuptools_scm]
+
+[tool.pytest-enabler.mypy]
+addopts = "--mypy"
+
+[tool.pytest-enabler.cov]
+addopts = "--cov"
+
+[tool.cibuildwheel]
+archs = ["native"]
+skip = "{cp,pp}27-* {cp,pp}35-* pp*"
+
+build-frontend = "build"
+
+test-command = "pytest {package}/tests -v"
+before-test = ""
+test-requires = ["pytest"]
+test-extras = []
+
+manylinux-x86_64-image = "manylinux2014"
+
+[tool.cibuildwheel.windows]
+before-build = "pip install delvewheel pupil-pthreads-win"
+repair-wheel-command = [
+    "python scripts/repair-wheels-windows.py {wheel} {dest_dir}",
+]
