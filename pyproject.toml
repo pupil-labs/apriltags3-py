@@ -40,9 +40,8 @@ before-build = "pip install delvewheel pupil-pthreads-win"
 repair-wheel-command = [
     "python scripts/repair-wheels-windows.py {wheel} {dest_dir}",
     "choco install dependencies -y",
-    "cd {dest_dir}",
-    "7z.exe x *.whl",
-    "Dependencies.exe -chain -depth 1 ./pupil_apriltags/lib/apriltag.dll",
-    "Dependencies.exe -chain -depth 1 ./pupil_apriltags.libs/pthreadvc2.dll",
+    "cd {dest_dir} && 7z.exe x *.whl",
+    "Dependencies.exe -chain -depth 1 {dest_dir}/pupil_apriltags/lib/apriltag.dll",
+    "Dependencies.exe -chain -depth 1 {dest_dir}/pupil_apriltags.libs/pthreadvc2.dll",
 ]
 environment = { PATH='C:\\Program Files\\7-Zip\\;$PATH' }
