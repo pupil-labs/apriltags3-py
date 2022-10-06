@@ -1,3 +1,7 @@
+1.0.4.post3 (2022-10-06)
+########################
+- Download build artifacts before invoking ``tox -e release``
+
 1.0.4.post2 (2022-10-06)
 ########################
 - Don't attempt package build as part of ``tox -e release``
