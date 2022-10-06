@@ -1,3 +1,7 @@
+1.0.4.post4 (2022-10-06)
+########################
+- Fix ``README.rst`` rendering
+
 1.0.4.post3 (2022-10-06)
 ########################
 - Download build artifacts before invoking ``tox -e release``

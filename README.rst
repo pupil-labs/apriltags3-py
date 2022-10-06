@@ -6,8 +6,8 @@
 
 .. _PyPI link: https://pypi.org/project/pupil-apriltags
 
-.. image:: https://github.com/pupil-labs/pupil-apriltags/workflows/tests/badge.svg
-   :target: https://github.com/pupil-labs/pupil-apriltags/actions?query=workflow%3A%22tests%22
+.. image:: https://github.com/pupil-labs/apriltags/workflows/tests/badge.svg
+   :target: https://github.com/pupil-labs/apriltags/actions?query=workflow%3A%22tests%22
    :alt: tests
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
@@ -98,30 +98,32 @@ You can initialize it as following:
 
    from pupil_apriltags import Detector
 
-   at_detector = Detector(families='tag36h11',
-                          nthreads=1,
-                          quad_decimate=1.0,
-                          quad_sigma=0.0,
-                          refine_edges=1,
-                          decode_sharpening=0.25,
-                          debug=0)
+   at_detector = Detector(
+      families="tag36h11",
+      nthreads=1,
+      quad_decimate=1.0,
+      quad_sigma=0.0,
+      refine_edges=1,
+      decode_sharpening=0.25,
+      debug=0
+   )
 
 The options are:
 
 +---+---+----------------------------------------------------------------+
-| * | * | **Explanation**                                                |
-| * | * |                                                                |
+|   |   | **Explanation**                                                |
+|   |   |                                                                |
 | O | D |                                                                |
 | p | e |                                                                |
 | t | f |                                                                |
 | i | a |                                                                |
 | o | u |                                                                |
 | n | l |                                                                |
-| * | t |                                                                |
-| * | * |                                                                |
-|   | * |                                                                |
+|   | t |                                                                |
+|   |   |                                                                |
+|   |   |                                                                |
 +===+===+================================================================+
-| f | ‘ | Tag families, separated with a space                           |
+| f | ' | Tag families, separated with a space                           |
 | a | t |                                                                |
 | m | a |                                                                |
 | i | g |                                                                |
@@ -130,7 +132,7 @@ The options are:
 | e | h |                                                                |
 | s | 1 |                                                                |
 |   | 1 |                                                                |
-|   | ’ |                                                                |
+|   | ' |                                                                |
 +---+---+----------------------------------------------------------------+
 | n | 1 | Number of threads                                              |
 | t |   |                                                                |
@@ -142,8 +144,8 @@ The options are:
 | s |   |                                                                |
 +---+---+----------------------------------------------------------------+
 | q | 2 | Detection of quads can be done on a lower-resolution image,    |
-| u | . | improving speed at a cost of pose accuracy and a slight        |
-| a | 0 | decrease in detection rate. Decoding the binary payload is     |
+| u |   | improving speed at a cost of pose accuracy and a slight        |
+| a |   | decrease in detection rate. Decoding the binary payload is     |
 | d |   | still done at full resolution. Set this to 1.0 to use the full |
 | _ |   | resolution.                                                    |
 | d |   |                                                                |
@@ -156,8 +158,8 @@ The options are:
 | e |   |                                                                |
 +---+---+----------------------------------------------------------------+
 | q | 0 | What Gaussian blur should be applied to the segmented image.   |
-| u | . | Parameter is the standard deviation in pixels. Very noisy      |
-| a | 0 | images benefit from non-zero values (e.g. 0.8)                 |
+| u |   | Parameter is the standard deviation in pixels. Very noisy      |
+| a |   | images benefit from non-zero values (e.g. 0.8)                 |
 | d |   |                                                                |
 | _ |   |                                                                |
 | s |   |                                                                |
@@ -167,7 +169,7 @@ The options are:
 | a |   |                                                                |
 +---+---+----------------------------------------------------------------+
 | r | 1 | When non-zero, the edges of the each quad are adjusted to      |
-| e |   | “snap to” strong gradients nearby. This is useful when         |
+| e |   | "snap to" strong gradients nearby. This is useful when         |
 | f |   | decimation is employed, as it can increase the quality of the  |
 | i |   | initial quad estimate substantially. Generally recommended to  |
 | n |   | be on (1). Very computationally inexpensive. Option is ignored |
@@ -179,11 +181,11 @@ The options are:
 | e |   |                                                                |
 | s |   |                                                                |
 +---+---+----------------------------------------------------------------+
-| d | 0 | How much sharpening should be done to decoded images? This can |
-| e | . | help decode small tags but may or may not help in odd lighting |
-| c | 2 | conditions or low light conditions                             |
-| o | 5 |                                                                |
-| d |   |                                                                |
+| d | 2 | How much sharpening should be done to decoded images? This can |
+| e | 5 | help decode small tags but may or may not help in odd lighting |
+| c | e | conditions or low light conditions                             |
+| o | - |                                                                |
+| d | 2 |                                                                |
 | e |   |                                                                |
 | _ |   |                                                                |
 | s |   |                                                                |
@@ -219,8 +221,8 @@ attributes (note that the ones with an asterisks are computed only if
 ``estimate_tag_pose=True``):
 
 +---+--------------------------------------------------------------------+
-| * | **Explanation**                                                    |
-| * |                                                                    |
+|   | **Explanation**                                                    |
+|   |                                                                    |
 | A |                                                                    |
 | t |                                                                    |
 | t |                                                                    |
@@ -230,8 +232,8 @@ attributes (note that the ones with an asterisks are computed only if
 | u |                                                                    |
 | t |                                                                    |
 | e |                                                                    |
-| * |                                                                    |
-| * |                                                                    |
+|   |                                                                    |
+|   |                                                                    |
 +===+====================================================================+
 | t | The family of the tag.                                             |
 | a |                                                                    |
@@ -263,7 +265,7 @@ attributes (note that the ones with an asterisks are computed only if
 | e | average difference between the intensity of a data bit versus the  |
 | c | decision threshold. Higher numbers roughly indicate better         |
 | i | decodes. This is a reasonable measure of detection accuracy only   |
-| s | for very small tags– not effective for larger tags (where we could |
+| s | for very small tags--not effective for larger tags (where we could |
 | i | have sampled anywhere within a bit cell and still gotten a good    |
 | o | detection.)                                                        |
 | n |                                                                    |
@@ -276,7 +278,7 @@ attributes (note that the ones with an asterisks are computed only if
 | n |                                                                    |
 +---+--------------------------------------------------------------------+
 | h | The 3x3 homography matrix describing the projection from an        |
-| o | “ideal” tag (with corners at (-1,1), (1,1), (1,-1), and (-1, -1))  |
+| o | "ideal" tag (with corners at (-1,1), (1,1), (1,-1), and (-1, -1))  |
 | m | to pixels in the image.                                            |
 | o |                                                                    |
 | g |                                                                    |
