@@ -280,6 +280,15 @@ class Detector:
         }
         filename_pattern = filename_patterns_by_platform[platform.system()]
 
+        if platform.system() == "Windows" and sys.version_info < (3, 8):
+            # the apriltags dll depends on pthreads-win, we inject our pre-built libs
+            # into the path before loading with ctypes
+            from ctypes import WinDLL
+
+            import pupil_pthreads_win
+
+            WinDLL(str(pupil_pthreads_win.dll_path.resolve()))
+
         self.libc = None
         self.tag_detector = None
         self.tag_detector_ptr = None
@@ -291,9 +300,7 @@ class Detector:
             logger.debug(f"Testing possible hit: {hit}...")
             if platform.system() == "Windows":
                 dll_path = str(hit.parent.resolve())
-                if sys.version_info < (3, 8):
-                    os.environ["PATH"] = dll_path + os.pathsep + os.environ["PATH"]
-                else:
+                if sys.version_info >= (3, 8):
                     dll_dir = os.add_dll_directory(dll_path)
             self.libc = ctypes.CDLL(str(hit))
             if self.libc:
