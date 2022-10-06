@@ -10,7 +10,7 @@ def repair(wheel, dest_dir):
     pthreads_path = pupil_pthreads_win.dll_path
     msvcr100_path = r"C:\WINDOWS\system32\MSVCR100.dll"
     cmd = (
-        "delvewheel.exe repair -w {dest_dir} {wheel} "
+        "delvewheel.exe repair -v -w {dest_dir} {wheel} "
         "--add-dll {pthreads_path};{msvcr100_path}"
     )
     cmd = cmd.format(
