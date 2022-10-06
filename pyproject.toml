@@ -39,10 +39,4 @@ manylinux-x86_64-image = "manylinux2014"
 before-build = "pip install delvewheel pupil-pthreads-win"
 repair-wheel-command = [
     "python scripts/repair-wheels-windows.py {wheel} {dest_dir}",
-    "dir {dest_dir}",
-    "7z.exe x {dest_dir}/*.whl",
-    "choco install dependencies -y",
-    "Dependencies.exe -chain -depth 2 ./pupil_apriltags/lib/apriltag.dll",
-    "Dependencies.exe -chain -depth 2 ./pupil_apriltags.libs/pthreadvc2.dll",
 ]
-environment = { PATH='C:\\Program Files\\7-Zip\\;$PATH' }
