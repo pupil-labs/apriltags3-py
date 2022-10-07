@@ -19,9 +19,10 @@ import os
 import platform
 import sys
 from pathlib import Path
-from typing import Tuple
+from typing import Optional, Tuple
 
 import numpy
+import numpy.typing as npt
 
 logger = logging.getLogger(__name__)
 
@@ -168,19 +169,48 @@ def zarray_get(za, idx, ptr):
 
 class Detection:
 
-    """Combined pythonic wrapper for apriltag_detection and apriltag_pose"""
+    """Combined pythonic wrapper for apriltag_detection and apriltag_pose
+
+    Note: Attributes with an asterisks are computed only if ``estimate_tag_pose=True``
+    """
 
     def __init__(self):
-        self.tag_family = None
-        self.tag_id = None
-        self.hamming = None
+        self.tag_family: str = None
+        "The family of the tag."
+        self.tag_id: int = None
+        "The decoded ID of the tag."
+        self.hamming: int = None
+        """How many error bits were corrected?
+        Note: accepting large numbers of corrected errors leads to greatly increased
+        false positive rates.
+        Note: As of this implementation, the detector cannot detect tags with a Hamming
+        distance greater than 2.
+        """
         self.decision_margin = None
+        """A measure of the quality of the binary decoding process
+
+        The average difference between the intensity of a data bit versus the decision
+        threshold. Higher numbers roughly indicate better decodes. This is a reasonable
+        measure of detection accuracy only for very small tags--not effective for larger
+        tags (where we could have sampled anywhere within a bit cell and still gotten a
+        good detection.)
+        """
         self.homography = None
+        """
+        The 3x3 homography matrix describing the projection from an "ideal" tag (with
+        corners at (-1,1), (1,1), (1,-1), and (-1, -1)) to pixels in the image.
+        """
         self.center = None
+        "The center of the detection in image pixel coordinates."
         self.corners = None
+        """The corners of the tag in image pixel coordinates. These always wrap counter-
+        clock wise around the tag."""
         self.pose_R = None
+        r"\* Rotation matrix of the pose estimate."
         self.pose_t = None
+        r"\* Translation of the pose estimate."
         self.pose_err = None
+        r"\* Object-space error of the estimation."
 
     def __str__(self):
         return (
@@ -417,10 +447,21 @@ class Detector:
             self.libc.apriltag_detector_destroy.restype = None
             self.libc.apriltag_detector_destroy(self.tag_detector_ptr)
 
-    def detect(self, img, estimate_tag_pose=False, camera_params=None, tag_size=None):
+    def detect(
+        self,
+        img: npt.NDArray[numpy.uint8],
+        estimate_tag_pose: bool = False,
+        camera_params: Optional[Tuple[float, float, float, float]] = None,
+        tag_size: Optional[float] = None,
+    ) -> Detection:
+        """Run detectons on the provided image.
 
-        """Run detectons on the provided image. The image must be a grayscale
-        image of type numpy.uint8."""
+        The image must be a grayscale image of type ``numpy.uint8``.
+
+        If you also want to extract the tag pose, ``estimate_tag_pose`` should
+        be set to ``True`` and ``camera_params`` (``[fx, fy, cx, cy]``) and ``tag_size``
+        (in meters) should be supplied.
+        """
 
         assert len(img.shape) == 2
         assert img.dtype == numpy.uint8

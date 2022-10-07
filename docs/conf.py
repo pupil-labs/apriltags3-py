@@ -26,11 +26,15 @@ link_files = {
 
 # Be strict about any broken references:
 nitpicky = True
-
+nitpick_ignore = [
+    ("py:class", "numpy.uint8"),
+    ("py:class", "numpy._typing._generic_alias.ScalarType"),
+]
 # Include Python intersphinx mapping to prevent failures
 # jaraco/skeleton#51
 extensions += ["sphinx.ext.intersphinx"]
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
 }
 html_theme = "furo"
