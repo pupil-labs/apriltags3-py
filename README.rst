@@ -70,7 +70,7 @@ You can initialize it as following:
 
    at_detector.detect(img)
 
-See the `API reference documentation <https://pupil-apriltags.readthedocs.io/en/stable/>`__
+See the `API reference documentation <https://pupil-apriltags.readthedocs.io/en/stable/api.html>`__
 for details.
 
 .. _install_from_source:

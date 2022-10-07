@@ -1,3 +1,8 @@
+1.0.4.post5 (2022-10-07)
+########################
+- Cleanup documentation
+
+
 1.0.4.post4 (2022-10-06)
 ########################
 - Fix ``README.rst`` rendering
