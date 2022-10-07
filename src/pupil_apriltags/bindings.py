@@ -22,7 +22,9 @@ from pathlib import Path
 from typing import Optional, Tuple
 
 import numpy
-import numpy.typing as npt
+
+if sys.version_info[:2] >= (3, 7):
+    import numpy.typing as npt
 
 logger = logging.getLogger(__name__)
 
@@ -449,7 +451,7 @@ class Detector:
 
     def detect(
         self,
-        img: npt.NDArray[numpy.uint8],
+        img: "npt.NDArray[numpy.uint8]",
         estimate_tag_pose: bool = False,
         camera_params: Optional[Tuple[float, float, float, float]] = None,
         tag_size: Optional[float] = None,
