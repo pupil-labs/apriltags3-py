@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-
-import subprocess as sp
-
-print(sp.check_output(["git", "status"]).decode())
+from importlib.metadata import version
 
 extensions = ["sphinx.ext.autodoc", "jaraco.packaging.sphinx", "rst.linker"]
 
@@ -42,3 +39,8 @@ intersphinx_mapping = {
     "numpy": ("https://numpy.org/doc/stable/", None),
 }
 html_theme = "furo"
+
+project = "pupil-apriltags"
+release = version(project)
+version = ".".join(release.split(".")[:2])
+html_title = f"{project} {release}"

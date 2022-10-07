@@ -1,3 +1,8 @@
+1.0.4.post7 (2022-10-07)
+########################
+- Fix README rendering
+- Use `major.minor` version for docs build
+
 1.0.4.post6 (2022-10-07)
 ########################
 - Fix ``numpy.typing`` on Python 3.6
