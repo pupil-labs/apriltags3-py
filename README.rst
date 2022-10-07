@@ -43,7 +43,7 @@ This is the recommended and easiest way to install pupil-apriltags.
    pip install pupil-apriltags
 
 We offer pre-built binary wheels for common operating systems. To install from source,
-see :ref:`the instructions <install_from_source>` below.
+see below.
 
 Usage
 ~~~~~
@@ -72,8 +72,6 @@ You can initialize it as following:
 
 See the `API reference documentation <https://pupil-apriltags.readthedocs.io/en/stable/api.html>`__
 for details.
-
-.. _install_from_source:
 
 Manual installation from source
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
