@@ -1,3 +1,7 @@
+1.0.4.post6 (2022-10-07)
+########################
+- Fix ``numpy.typing`` on Python 3.6
+
 1.0.4.post5 (2022-10-07)
 ########################
 - Cleanup documentation
