@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+import subprocess as sp
+
+print(sp.check_output(["git", "status"]).decode())
+
 extensions = ["sphinx.ext.autodoc", "jaraco.packaging.sphinx", "rst.linker"]
 
 master_doc = "index"
