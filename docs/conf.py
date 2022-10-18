@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-from importlib.metadata import version
+try:
+    from importlib.metadata import version
+except ImportError:
+    from importlib_metadata import version
 
 extensions = ["sphinx.ext.autodoc", "jaraco.packaging.sphinx", "rst.linker"]
 

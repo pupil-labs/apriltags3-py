@@ -1,3 +1,8 @@
+1.0.4.post8 (2022-10-18)
+########################
+- Fix ``importlib.metadata`` import during RTD build
+
+
 1.0.4.post7 (2022-10-07)
 ########################
 - Fix README rendering
