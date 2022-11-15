@@ -1,7 +1,10 @@
+1.0.4.post9 (2022-11-15)
+########################
+- Require and use delvewheel 1.1.1 for PyInstaller compatibility
+
 1.0.4.post8 (2022-10-18)
 ########################
 - Fix ``importlib.metadata`` import during RTD build
-
 
 1.0.4.post7 (2022-10-07)
 ########################

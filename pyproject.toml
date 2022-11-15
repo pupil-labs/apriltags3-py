@@ -36,7 +36,7 @@ test-extras = []
 manylinux-x86_64-image = "manylinux2014"
 
 [tool.cibuildwheel.windows]
-before-build = "pip install delvewheel pupil-pthreads-win"
+before-build = "pip install \"delvewheel>=1.1.1\" pupil-pthreads-win"
 repair-wheel-command = [
     "python scripts/repair-wheels-windows.py {wheel} {dest_dir}",
 ]
