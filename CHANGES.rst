@@ -1,3 +1,7 @@
+1.0.4.post10 (2022-11-15)
+########################
+- Fix wheel repair using delvewheel 1.1.1
+
 1.0.4.post9 (2022-11-15)
 ########################
 - Require and use delvewheel 1.1.1 for PyInstaller compatibility

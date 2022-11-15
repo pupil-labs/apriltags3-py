@@ -7,11 +7,13 @@ import pupil_pthreads_win
 
 
 def repair(wheel, dest_dir):
-    pthreads_path = pupil_pthreads_win.dll_path
-    msvcr100_path = r"C:\WINDOWS\system32\MSVCR100.dll"
+    pthreads_path = pathlib.Path(pupil_pthreads_win.dll_path)
+    msvcr100_path = pathlib.Path(r"C:\WINDOWS\system32\MSVCR100.dll")
+
     cmd = (
         "delvewheel.exe repair -v -w {dest_dir} {wheel} "
-        "--add-dll {pthreads_path};{msvcr100_path}"
+        "--add-path {pthreads_path.parent};{msvcr100_path.parent} "
+        "--add-dll {pthreads_path.name};{msvcr100_path.name}"
     )
     cmd = cmd.format(
         wheel=wheel,
@@ -19,8 +21,8 @@ def repair(wheel, dest_dir):
         pthreads_path=pthreads_path,
         msvcr100_path=msvcr100_path,
     )
-    out = subprocess.check_output(cmd, shell=True).decode()
     print("+ " + cmd)
+    out = subprocess.check_output(cmd, shell=True).decode()
     print("+ delvewheel.exe output:\n" + out)
     last_line = out.splitlines()[-1]
 
